@@ -1,4 +1,3 @@
--- local pretty = require 'pl.pretty'
 local Process = {}
 
 local missing_icon = "__core__/graphics/too-far.png"
@@ -28,6 +27,10 @@ local function normalize_recipe(r)
 		r.result_count = nil
 	end
 	for i, result in ipairs(r.results) do
+		if result.amount == nil and result.amount_min ~= nil then
+			result.amount = result.amount_min
+		end
+
 		if result.amount == nil then
 			r.results[i] = {name = result[1], amount = result[2]}
 		end
