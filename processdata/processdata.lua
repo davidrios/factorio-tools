@@ -163,7 +163,7 @@ function Process.process_data(data, locales, verbose)
 				subgroup = "other"
 				item["subgroup"] = "other"
 			end
-			if subgroup == "bob-gas-bottle" then
+			if subgroup == "fill-barrel" or subgroup == "bob-gas-bottle" then
 				goto continue
 			end
 			item["group"] = item_subgroups[subgroup]["group"]
@@ -245,6 +245,10 @@ function Process.process_data(data, locales, verbose)
 					result = recipe["result"]
 				else
 					local entry = recipe["results"][1]
+					if entry.amount == 0 or entry[2] == 0 then
+						msg("ignoring recipe that yields nothing:", name)
+						goto continue
+					end
 					if entry.name ~= nil then
 						result = entry["name"]
 					else
