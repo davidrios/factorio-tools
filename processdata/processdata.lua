@@ -1,3 +1,4 @@
+-- local pretty = require 'pl.pretty'
 local Process = {}
 
 local missing_icon = "__core__/graphics/too-far.png"
@@ -50,14 +51,14 @@ end
 
 local conversion_factor = {
 	[""] = 1,
-	["k"] = 1000,
+	["K"] = 1000,
 	["M"] = 1000000,
 	["G"] = 1000000000,
 }
 
 local function convert_power(s)
 	local quantity, unit = string.match(s, "([^%a]+)(%a?)[WJ]")
-	local factor = conversion_factor[unit]
+	local factor = conversion_factor[unit:upper()]
 	return tonumber(quantity) * factor
 end
 
@@ -159,7 +160,7 @@ function Process.process_data(data, locales, verbose)
 				subgroup = "other"
 				item["subgroup"] = "other"
 			end
-			if subgroup == "fill-barrel" or subgroup == "bob-gas-bottle" then
+			if subgroup == "bob-gas-bottle" then
 				goto continue
 			end
 			item["group"] = item_subgroups[subgroup]["group"]
@@ -232,7 +233,7 @@ function Process.process_data(data, locales, verbose)
 			-- sensible thing:
 			--
 			-- If any of the icon, subgroup, or order are not provided, inherit
-			-- them from the main_product if it is defined; otherwise, inherit 
+			-- them from the main_product if it is defined; otherwise, inherit
 			-- from the (singular) result.
 			local main_product
 			if recipe.result ~= nil or recipe.results ~= nil and #recipe.results == 1 then
